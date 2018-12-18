@@ -1058,9 +1058,10 @@ static void RD_NORETURN usage (const char *argv0, int exitcode,
                 "                     <value>  (absolute offset) |\n"
                 "                     -<value> (relative offset from end)\n"
 #if RD_KAFKA_VERSION >= 0x00090300
-                "                     s@<value> (timestamp in ms to start at)\n"
-                "                     e@<value> (timestamp in ms to stop at "
+                "                     s@<value> (timestamp in ms/relative offset/date to start at)\n"
+                "                     e@<value> (timestamp in ms/relative offset/date to stop at "
                 "(not included))\n"
+		"                     Valid examples: \"s@2018-01-01\" s@-7d e@-1h \"s@2018-10-12 12:33:24\"\n"
 #endif
                 "  -e                 Exit successfully when last message "
                 "received\n"
@@ -1539,10 +1540,10 @@ static void argparse (int argc, char **argv,
                                 conf.offset = RD_KAFKA_OFFSET_STORED;
 #if RD_KAFKA_VERSION >= 0x00090300
                         else if (!strncmp(optarg, "s@", 2)) {
-                                conf.startts = strtoll(optarg+2, NULL, 10);
+                                conf.startts = parse_offset_parameter(optarg+2);
                                 conf.flags |= CONF_F_APIVERREQ;
                         } else if (!strncmp(optarg, "e@", 2)) {
-                                conf.stopts = strtoll(optarg+2, NULL, 10);
+                                conf.stopts = parse_offset_parameter(optarg+2);
                                 conf.flags |= CONF_F_APIVERREQ;
                         }
 #endif

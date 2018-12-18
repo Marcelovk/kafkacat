@@ -177,3 +177,8 @@ void fmt_term_json (void);
  * tools.c
  */
 int query_offsets_by_time (rd_kafka_topic_partition_list_t *offsets);
+
+/*
+ * timestamp_parser.c
+ */
+unsigned long parse_offset_parameter(char *offset_parameter);
